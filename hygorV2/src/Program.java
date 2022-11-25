@@ -7,6 +7,10 @@ public class Program {
     public static  int[] vetorDoSelection;
     public static int[] vetorDoInsertion;
 
+    public static int trocasDoBubble = 0;
+    public static int trocasDoInsertion = 0;
+    public static int trocasDoSelection = 0;
+
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
@@ -28,72 +32,88 @@ public class Program {
 
         System.out.println("Vetor antes das mudanças: ");
         printarVetor(vetorDoBubble);
-        System.out.println("Vetor com o selection sorter");
-        selectionSort(vetorDoSelection);
+
         System.out.println("Vetor com o bubble sorter: ");
         bubbleSorter(vetorDoBubble);
+        System.out.println("Vetor com o selection sorter");
+        selectionSort(vetorDoSelection);
         System.out.println("Vetor com o insertion sorter: ");
         insertionSort(vetorDoInsertion);
+
+        int min = Math.min(trocasDoBubble, Math.min(trocasDoInsertion, trocasDoSelection));
+
+
+
+        if(min == trocasDoInsertion){
+            System.out.println("Insertion é o mais eficiente");
+        }
+
+        if(min == trocasDoBubble){
+            System.out.println("Bubble é o mais eficiente");
+        }
+
+        if(min == trocasDoSelection){
+            System.out.println("Selection é o mais eficiente");
+        }
 
 
     }
 
     public static void selectionSort(int[] list) {
-        int trocas = 0;
         for (int i = 0; i < list.length - 1; i++) {
             
             int menorAtual = list[i];
             int menorAtualIndex = i;
+            trocasDoSelection +=2;
             for (int j = i + 1; j < list.length; j++) { 
                 if (menorAtual > list[j]) { 
                     menorAtual = list[j];
                     menorAtualIndex = j;
+                    trocasDoSelection +=2;
                 }
             }
             
             if (menorAtualIndex != i) { 
                 list[menorAtualIndex] = list[i];
                 list[i] = menorAtual;
-                trocas += 2;
+                trocasDoSelection += 2;
             }
         }
-        System.out.println("Trocas realizadas pelo selection sorter: " + trocas);
+        System.out.println("Trocas realizadas pelo selection sorter: " + trocasDoSelection);
         printarVetor(list);
     }
 
     public static void bubbleSorter(int[] vetor){
-        int trocas = 0;
 
         for(int bigCount = 0; bigCount < vetor.length; bigCount++) {
             for (int count = 0; count < vetor.length - 1; count++) {
                 int current = vetor[count];
+                trocasDoBubble+=1;
 
                 if (vetor[count] > vetor[count + 1]) {
                     vetor[count] = vetor[count + 1];
                     vetor[count + 1] = current;
-                    trocas += 2;
+                    trocasDoBubble += 2;
                 }
             }
         }
-        System.out.println("Trocas realizadas pelo bubble sorter: " + trocas);
+        System.out.println("Trocas realizadas pelo bubble sorter: " + trocasDoBubble);
         printarVetor(vetor);
     }
 
-    public static void insertionSort(int[] vetor){
-        int trocas = 0;
-        int temp;
-
-        for (int i = 1; i < vetor.length; i++) {
-            for(int j = i ; j > 0 ; j--){
-                if(vetor[j] < vetor[j-1]){
-                    temp = vetor[j];
-                    vetor[j] = vetor[j-1];
-                    vetor[j-1] = temp;
-                    trocas +=2;
-                }
+    static void insertionSort(int vetor[]) {
+        for (int i = 1, j; i < vetor.length; i++) {
+            int temp = vetor[i];
+            trocasDoInsertion +=1;
+            for (j = i; j > 0 && temp < vetor[j - 1]; j--) {
+                vetor[j] = vetor[j - 1];
+                trocasDoInsertion+=1;
             }
+            vetor[j] = temp;
+            trocasDoInsertion+=1;
         }
-        System.out.println("Trocas realizadas pelo insertion sorter: " + trocas);
+
+        System.out.println("Trocas realizadas pelo insertion sorter: " + trocasDoInsertion);
         printarVetor(vetor);
     }
 
